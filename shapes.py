@@ -32,12 +32,12 @@ def getRotationMatrix(angle,point):
 	to,fro=getOriginTransform(point)
 	return to*rmatrix*fro
 
-def getScaleMatrix(height,width,centre):
-	'''get matrix to multiply height of shape by height and width by width'''
+def getScaleMatrix(ratio,centre):
+	'''generate a matrix to make a shape ratio times bigger'''
 	x,y=centre
 	smatrix=matrix([
-			[height,0,0],
-			[0,width,0],
+			[ratio,0,0],
+			[0,ratio,0],
 			[0,0,1]
 		])
 
@@ -46,34 +46,42 @@ def getScaleMatrix(height,width,centre):
 
 
 class Shape:
-	def __init__(self,colour,centre):
+	def __init__(self,colour):
 		self.colour=colour
-		self.centre=matrix([centre[0],centre[1],1])
 
 	def getCentre(self):
 		'''return the 2d co-ordinates of the centre'''
 		a=self.centre.tolist()[0]
 		return a[0],a[1]
 
+	def setColour(self,colour):
+		self.colour=colour
+
 	def move(self,x,y):
 		'''move the shape x units along the x-axis and y units along the y-axis'''
 		self.centre *= getMoveMatrix(x,y)
 
-	def rotate(self,angle):
-		'''rotate shape angle radians around the shapes centre'''
-		self.points *= getRotationMatrix(angle,self.getCentre())
+	def orbit(self,angle,point):
+		'''rotate the shape around a point'''
+		self.centre*=getRotationMatrix(angle,point)
+
 
 
 class Polygon(Shape):
 	'''a standard polygon'''
-	def __init__(self,colour,*points,centre):
+	def __init__(self,colour,*points):
 		'''colour is a string,points is a matrix'''
-		Shape.__init__(self,colour,centre)
+		Shape.__init__(self,colour)
 
 		self.points=[]
+		tx,ty=0,0
 		for a in points:
 			self.points.append([a[0],a[1],1])
+			tx+=a[0]
+			ty+=a[1]
 		self.points=matrix(self.points)
+		poino=len(points)
+		self.centre=matrix([tx/poino,ty/poino,1])
 
 	def __str__(self):
 		returnme="<polygon fill=\"%s\" points=\"" % self.colour
@@ -83,24 +91,30 @@ class Polygon(Shape):
 		return returnme
 
 	def move(self,x,y):
-		Shape.move(self,x,y)
-		self.points *= getMoveMatrix(x,y)
+		mm=getMoveMatrix(x,y)
+		self.points *= mm
+		self.centre *= mm
 
-	def scale(self,height,width):
+	def scale(self,ratio):
 		'''scale the shape on the x and y axis'''
-		self.points *= getScaleMatrix(height,width,self.getCentre())
+		self.points *= getScaleMatrix(ratio,self.getCentre())
 
-class FreeShape(Shape):
+	def rotate(self,angle):
+		'''rotate shape angle radians around the shapes centre'''
+		self.points *= getRotationMatrix(angle,self.getCentre())
+
+	def orbit(self,angle,point):
+		'''rotate a shape around another'''
+		mm = getRotationMatrix(angle,point)
+		self.centre *= mm
+		self.points *= mm
+
+class FreeShape(Polygon):
 	'''like a polygon but with bendier lines'''
-	def __init__(self,colour,*points,centre,dpath,**dpathData):
-		Shape.__init__(self,colour,centre)
+	def __init__(self,colour,*points,dpath,**dpathData):
+		Polygon.__init__(self,colour,*points)
 		self.dpath=dpath
 		self.dpathData=dpathData
-
-		self.points=[]
-		for a in points:
-			self.points.append([a[0],a[1],1])
-		self.points=matrix(self.points)
 
 
 	def __str__(self):
@@ -117,20 +131,17 @@ class FreeShape(Shape):
 
 		return returnme1+dpath+returnme2
 
-	def move(self,x,y):
-		Shape.move(self,x,y)
-		self.points*=getMoveMatrix(x,y)
-
 	def scale(self,ratio):
 		'''make the shape ratio times bigger'''
-		self.points*=getScaleMatrix(ratio,ratio,self.getCentre())
+		self.points*=getScaleMatrix(ratio,self.getCentre())
 		for a in self.dpathData:
 			self.dpathData[a]*=ratio
 
 class Circle(Shape):
 	def __init__(self,colour,radius,centre):
-		Shape.__init__(self,colour,centre)
+		Shape.__init__(self,colour)
 		self.radius=radius
+		self.centre=centre
 
 	def __str__(self):
 		values=(self.colour,self.radius) + self.getCentre()
@@ -140,10 +151,12 @@ class Circle(Shape):
 		'''multiply the size of the circle by ratio'''
 		self.radius *= ratio
 
+
 c=FreeShape("yellow",(50,0),(100,50),(50,50),centre=(50,50),dpath="M %POINT% A %Height%,%Width% 0 0,1 %POINT% L %POINT%",Height=120,Width=200)
-c.move(-25,50)
-#c.scale(2)
 
 print("<svg height=\"%d\" width=\"%d\">" % (200,200))
+print(c)
+c.orbit(pi/2,(100,100))
+c.setColour("red")
 print(c)
 print("</svg>")
