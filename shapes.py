@@ -150,13 +150,3 @@ class Circle(Shape):
 	def scale(self,ratio):
 		'''multiply the size of the circle by ratio'''
 		self.radius *= ratio
-
-
-c=FreeShape("yellow",(50,0),(100,50),(50,50),centre=(50,50),dpath="M %POINT% A %Height%,%Width% 0 0,1 %POINT% L %POINT%",Height=120,Width=200)
-
-print("<svg height=\"%d\" width=\"%d\">" % (200,200))
-print(c)
-c.orbit(pi/2,(100,100))
-c.setColour("red")
-print(c)
-print("</svg>")
