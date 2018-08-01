@@ -127,7 +127,7 @@ class FreeShape(Polygon):
 		for b in self.dpathData:
 			dpath=dpath.replace("%"+ b +"%",str(self.dpathData[b]))
 
-		returnme2="\"/>"
+		returnme2="\" />"
 
 		return returnme1+dpath+returnme2
 
@@ -141,7 +141,7 @@ class Circle(Shape):
 	def __init__(self,colour,radius,centre):
 		Shape.__init__(self,colour)
 		self.radius=radius
-		self.centre=centre
+		self.centre=matrix([centre[0],centre[1],1])
 
 	def __str__(self):
 		values=(self.colour,self.radius) + self.getCentre()
