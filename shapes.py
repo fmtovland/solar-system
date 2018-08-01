@@ -23,14 +23,17 @@ def getOriginTransform(point):
 def getRotationMatrix(angle,point):
 	'''get matrix to rotate shape angle radians around point'''
 
-	rmatrix=matrix([
+	rmatrix=getSimpleRotationMatrix(angle)
+
+	to,fro=getOriginTransform(point)
+	return to*rmatrix*fro
+
+def getSimpleRotationMatrix(angle):
+	return matrix([
 			[cos(angle),sin(angle),0],
 			[-sin(angle),cos(angle),0],
 			[0,0,1]
 		])
-
-	to,fro=getOriginTransform(point)
-	return to*rmatrix*fro
 
 def getScaleMatrix(ratio,centre):
 	'''generate a matrix to make a shape ratio times bigger'''

@@ -20,7 +20,6 @@ class Planet(Circle):
 	def addIsland(self,freeshape):
 		'''add an island to the planet (as a freeshape)'''
 		self.islands.append(freeshape)
-		self.islands[-1].points*=getMoveMatrix(*self.getCentre())
 
 	def move(self,x,y):
 		'''move the shape x units along the x-axis and y units along the y-axis'''
@@ -35,10 +34,7 @@ class Planet(Circle):
 			self.islands[i].points*=mm
 
 	def orbit(self,angle,point):
-		mm=getRotationMatrix(angle,point)
-		self.centre *= mm
-		for i in range(0,len(self.islands)):
-			self.islands[i].points*=mm
+		self.centre *= getRotationMatrix(angle,point)
 
-	def sunOrbit(self):
-		self.orbit(self.speed,self.sun)
+	def sunOrbit(self,fps):
+		self.orbit(self.speed/fps,self.sun)

@@ -2,16 +2,16 @@ from shapes import *
 from planet import *
 
 width,height=500,500
-centre=width/2,height/2
-frames=100
+centre=int(width/2),int(height/2)
+frames=999
+fps=20
 
 sun=Circle("yellow",50,centre)
 earth=Planet("blue",pi/3,30,sun,(centre[0],centre[1]-170))
-earth.addIsland(FreeShape("green",(10,10),(-30,0),(10,-30),dpath="M %POINT% L %POINT% L %POINT%"))
-earth.sunOrbit()
+earth.addIsland(FreeShape("green",(10,10),(-30,0),(10,-30),dpath="M %CENTRE% m %POINT% l %POINT% l %POINT%"))
 
-for i in range(0,1):
-	filename="file%3d.svg" % i
+for i in range(0,frames):
+	filename="file%4d.svg" % i
 	filename=filename.replace(" ","0")
 	out=open(filename,"w+")	
 
@@ -20,3 +20,5 @@ for i in range(0,1):
 	out.write(earth.__str__())
 	out.write("</svg>")
 	out.close()
+
+	earth.sunOrbit(fps)
