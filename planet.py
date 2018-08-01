@@ -1,18 +1,22 @@
 from shapes import *
+from copy import deepcopy
 
 class Planet(Circle):
 	'''a class to represent a planet'''
-	def __init__(self,colour,speed,radius,sun,centre):
-		'''speed is % of a orbit, sun is the celestial body it orbits around'''
+	def __init__(self,colour,year,radius,sun,centre):
+		'''year is days in the planets year, sun is the celestial body it orbits around'''
 		Circle.__init__(self,colour,radius,centre)
-		self.speed=speed
+		self.year=year
+		self.day=0
 		self.sun=sun.getCentre()
 		self.islands=[]
 
 	def __str__(self):
 		returnme=Circle.__str__(self)
 		for l in self.islands:
-			returnme+="\n"+l.__str__()
+			tmp=deepcopy(l)
+			tmp.points*=getSimpleRotationMatrix(2*pi*(self.day/self.year))
+			returnme+="\n"+tmp.__str__()
 		centre="%.3f,%.3f" % self.getCentre()
 		returnme=returnme.replace("%CENTRE%",centre)
 		return returnme
@@ -36,5 +40,7 @@ class Planet(Circle):
 	def orbit(self,angle,point):
 		self.centre *= getRotationMatrix(angle,point)
 
-	def sunOrbit(self,fps):
-		self.orbit(self.speed/fps,self.sun)
+	def sunOrbit(self):
+		self.orbit((2*pi)/self.year,self.sun)
+		self.day+=1
+		self.day%=self.year
