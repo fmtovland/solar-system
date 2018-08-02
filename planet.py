@@ -14,12 +14,14 @@ class Planet(Circle):
 		self.islands=[]
 
 	def __str__(self):
-		returnme=Circle.__str__(self)
-		for l in self.islands:
-			tmp=deepcopy(l)
-			tmp.points*=getSimpleRotationMatrix(2*pi*(self.hours/self.hoursPerDay))
-			returnme+="\n"+tmp.__str__()
-		centre="%.3f,%.3f" % self.getCentre()
+		tmp=deepcopy(self)
+		tmp.centre *= self.getSunOrbitMatrix()
+		self.sun.moonOrbit(tmp)
+		returnme=Circle.__str__(tmp)
+		for l in tmp.islands:
+			l.points*=getSimpleRotationMatrix(2*pi*(self.hours/self.hoursPerDay))
+			returnme+="\n"+l.__str__()
+		centre="%.3f,%.3f" % tmp.getCentre()
 		returnme=returnme.replace("%CENTRE%",centre)
 		return returnme
 
@@ -43,11 +45,9 @@ class Planet(Circle):
 		self.centre *= getRotationMatrix(angle,point)
 
 	def getSunOrbitMatrix(self):
-		return getRotationMatrix((2*pi)/self.year,self.sun.getCentre())
+		return getRotationMatrix((2*pi)*(self.day/self.year),self.sun.getCentre())
 
 	def sunOrbit(self):
-		self.sun.moonOrbit(self)
-		self.centre *= self.getSunOrbitMatrix()
 		self.day+=1
 		self.day%=self.year
 		self.hours+=1
