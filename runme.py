@@ -5,8 +5,8 @@ from planet import *
 #width,height=3840,2160
 #width,height=500000,500000
 width,height=1000,1000
-#frames=365*24
-frames=100
+frames=365*24
+#frames=100
 planetList=[]
 
 def getSunDist(dist):
@@ -69,9 +69,23 @@ earth.addIsland(FreeShape("green",
 			(1.283088, 11.78395),
 			(-5.7877605, 12.048000000000002),
 			dpath="m %CENTRE% c %POINT% %POINT% %POINT% %POINT% %POINT% %POINT% %POINT% %POINT% %POINT% %POINT% %POINT% %POINT% %POINT% %POINT% %POINT% %POINT% %POINT% %POINT% z"))
+
+#earthmoon
 ex,ey=earth.getCentre()
 earthmoon=Planet("grey",1,27,5,earth,(ex,ey-50))
 planetList.append(earthmoon)
+
+#mars
+mars=Planet("red",687,25,13,sun,getSunDist(420))
+planetList.append(mars)
+
+#mars moons
+mx,my=mars.getCentre()
+phobos=Planet("pink",11,1,2,mars,(mx,my-38))
+planetList.append(phobos)
+deimos=Planet("brown",70,1,3,mars,(mx,my-53))
+planetList.append(deimos)
+
 
 for i in range(0,frames):
 	filename="/tmp/test/file%5d.svg" % i
