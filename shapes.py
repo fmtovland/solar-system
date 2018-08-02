@@ -148,7 +148,7 @@ class Circle(Shape):
 
 	def __str__(self):
 		values=(self.colour,self.radius) + self.getCentre()
-		return "<circle fill=\"%s\" r=\"%d\" cx=\"%d\" cy=\"%d\"/>" % values
+		return "<circle fill=\"%s\" r=\"%.3f\" cx=\"%.3f\" cy=\"%.3f\"/>" % values
 
 	def scale(self,ratio):
 		'''multiply the size of the circle by ratio'''
