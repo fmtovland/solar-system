@@ -47,7 +47,8 @@ planetList.append(venus)
 #earth
 earth=Planet("blue",365,24,25,sun,getSunDist(300))
 planetList.append(earth)
-#earth.addIsland(FreeShape("green",(10,10),(-30,0),(10,-30),dpath="M %CENTRE% m %POINT% l %POINT% l %POINT%"))
+earth.addIsland(FreeShape("green",(10,0),(3,3),(3,-3),(-3,-3),dpath="M %CENTRE% m %POINT% l %POINT% l %POINT% l %POINT% z"))
+earth.addIsland(FreeShape("White",(5,10),(10,-10),(10,10),(-10,10),dpath="M %CENTRE% m %POINT% c %POINT% %POINT% %POINT% z"))
 earth.addIsland(FreeShape("green",
 			(3.6217870000000003, 3.7266),
 			(5.9927805, 6.89365),
