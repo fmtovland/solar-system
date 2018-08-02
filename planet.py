@@ -6,11 +6,11 @@ class Planet(Circle):
 	def __init__(self,colour,year,hoursPerDay,radius,sun,centre):
 		'''year is days in the planets year, sun is the celestial body it orbits around'''
 		Circle.__init__(self,colour,radius,centre)
-		self.year=year
+		self.sun=sun
+		self.year=year*hoursPerDay
 		self.day=0
 		self.hoursPerDay=hoursPerDay
 		self.hours=0
-		self.sun=sun
 		self.islands=[]
 
 	def __str__(self):
