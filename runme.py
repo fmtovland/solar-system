@@ -9,7 +9,7 @@ sun=Sun("yellow",50,centre)
 earth=Planet("blue",365,24,30,sun,(centre[0],centre[1]-170))
 earth.addIsland(FreeShape("green",(10,10),(-30,0),(10,-30),dpath="M %CENTRE% m %POINT% l %POINT% l %POINT%"))
 ex,ey=earth.getCentre()
-moon=Planet("grey",27,5,earth,(ex,ey-50))
+moon=Planet("grey",27,27,5,earth,(ex,ey-50))
 
 for i in range(0,frames):
 	filename="file%3d.svg" % i
