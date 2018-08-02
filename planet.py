@@ -3,11 +3,13 @@ from copy import deepcopy
 
 class Planet(Circle):
 	'''a class to represent a planet'''
-	def __init__(self,colour,year,radius,sun,centre):
+	def __init__(self,colour,year,hoursPerDay,radius,sun,centre):
 		'''year is days in the planets year, sun is the celestial body it orbits around'''
 		Circle.__init__(self,colour,radius,centre)
 		self.year=year
 		self.day=0
+		self.hoursPerDay=hoursPerDay
+		self.hours=0
 		self.sun=sun
 		self.islands=[]
 
@@ -15,7 +17,7 @@ class Planet(Circle):
 		returnme=Circle.__str__(self)
 		for l in self.islands:
 			tmp=deepcopy(l)
-			tmp.points*=getSimpleRotationMatrix(2*pi*(self.day/self.year))
+			tmp.points*=getSimpleRotationMatrix(2*pi*(self.hours/self.hoursPerDay))
 			returnme+="\n"+tmp.__str__()
 		centre="%.3f,%.3f" % self.getCentre()
 		returnme=returnme.replace("%CENTRE%",centre)
@@ -48,6 +50,8 @@ class Planet(Circle):
 		self.centre *= self.getSunOrbitMatrix()
 		self.day+=1
 		self.day%=self.year
+		self.hours+=1
+		self.hours%=self.hoursPerDay
 
 	def moonOrbit(self,moon):
 		self.sun.moonOrbit(moon)
