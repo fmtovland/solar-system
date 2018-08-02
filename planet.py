@@ -8,7 +8,7 @@ class Planet(Circle):
 		Circle.__init__(self,colour,radius,centre)
 		self.year=year
 		self.day=0
-		self.sun=sun.getCentre()
+		self.sun=sun
 		self.islands=[]
 
 	def __str__(self):
@@ -40,7 +40,19 @@ class Planet(Circle):
 	def orbit(self,angle,point):
 		self.centre *= getRotationMatrix(angle,point)
 
+	def getSunOrbitMatrix(self):
+		return getRotationMatrix((2*pi)/self.year,self.sun.getCentre())
+
 	def sunOrbit(self):
-		self.orbit((2*pi)/self.year,self.sun)
+		self.sun.moonOrbit(self)
+		self.centre *= self.getSunOrbitMatrix()
 		self.day+=1
 		self.day%=self.year
+
+	def moonOrbit(self,moon):
+		self.sun.moonOrbit(moon)
+		moon.centre *= self.getSunOrbitMatrix()
+
+class Sun(Circle):
+	def moonOrbit(self,moon):
+		pass

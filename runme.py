@@ -5,7 +5,7 @@ width,height=500,500
 centre=int(width/2),int(height/2)
 frames=500
 
-sun=Circle("yellow",50,centre)
+sun=Sun("yellow",50,centre)
 earth=Planet("blue",150,30,sun,(centre[0],centre[1]-170))
 earth.addIsland(FreeShape("green",(10,10),(-30,0),(10,-30),dpath="M %CENTRE% m %POINT% l %POINT% l %POINT%"))
 ex,ey=earth.getCentre()
