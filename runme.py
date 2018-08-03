@@ -2,9 +2,9 @@ from shapes import *
 from planet import *
 
 
-#width,height=3840,2160
+width,height=3840,2160
 #width,height=500000,500000
-width,height=1000,1000
+#width,height=1000,1000
 frames=365*24
 #frames=100
 planetList=[]
@@ -86,6 +86,9 @@ planetList.append(phobos)
 deimos=Planet("brown",70,1,3,mars,(mx,my-53))
 planetList.append(deimos)
 
+#jupiter
+jupiter=Planet("aquamarine",10475,10,65,sun,getSunDist(700))
+planetList.append(jupiter)
 
 for i in range(0,frames):
 	filename="/tmp/test/file%5d.svg" % i
