@@ -1,7 +1,7 @@
 from shapes import *
 from copy import deepcopy
 try:
-	from __main__ import FRAMESKIP
+	from rendersettings import FRAMESKIP
 except ImportError:
 	FRAMESKIP=1
 
