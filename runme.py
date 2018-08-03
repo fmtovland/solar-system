@@ -98,8 +98,3 @@ for i in range(0,frames):
 		planet.run(out)
 	out.write("</svg>")
 	out.close()
-
-	mercury.sunOrbit()
-	venus.sunOrbit()
-	earth.sunOrbit()
-	earthmoon.sunOrbit()
