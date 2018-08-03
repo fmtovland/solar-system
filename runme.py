@@ -1,14 +1,15 @@
-from shapes import *
-from planet import *
-from multiprocessing.dummy import Pool
-import cairosvg
-
 width,height=3840,2160
 #width,height=500000,500000
 #width,height=1000,1000
 #frames=365*24
 frames=100
+FRAMESKIP=100	#only render one in every n frames
 threadnum=16
+
+from shapes import *
+from planet import *
+from multiprocessing.dummy import Pool
+import cairosvg
 
 planetList=[]
 

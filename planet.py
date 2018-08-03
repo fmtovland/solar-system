@@ -1,7 +1,9 @@
 from shapes import *
 from copy import deepcopy
-
-FRAMESKIP=100	#only render one in every n frames
+try:
+	from __main__ import FRAMESKIP
+except ImportError:
+	FRAMESKIP=1
 
 class Planet(Circle):
 	'''a class to represent a planet'''
