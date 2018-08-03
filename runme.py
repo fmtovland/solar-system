@@ -1,19 +1,20 @@
 from shapes import *
 from planet import *
+from multiprocessing.dummy import Pool
 import cairosvg
-
 
 width,height=3840,2160
 #width,height=500000,500000
 #width,height=1000,1000
-frames=365*24
-#frames=100
+#frames=365*24
+frames=100
+threadnum=4
+
 planetList=[]
 
 def getSunDist(dist):
 	'''get a planets starting position from the distance from the sun'''
 	return int(width/2),int(height/2)-dist,1
-
 
 #sun
 sun=Sun("yellow",100,getSunDist(0))
@@ -24,6 +25,7 @@ planetList.append(mercury)
 #mercury.addIsland(FreeShape("grey",(2.5,2.5,1),(-5,0,1),dpath="M %CENTRE% l %POINT% l %POINT%"))
 mercury.addIsland(FreeShape("grey",
 					(3,-3,1),
+
 					(-0.7289186,-0.63019,1),
 					(-2.1939827,-1.89453,1),
 					(-3.0474332,-1.96075,1),
@@ -91,6 +93,8 @@ planetList.append(deimos)
 jupiter=Planet("aquamarine",10475,10,65,sun,getSunDist(700))
 planetList.append(jupiter)
 
+#generate svgs
+svgstrings=[]
 for i in range(0,frames):
 	svgstring="<svg width=\"%s\" height=\"%s\" bgcolor=\"black\">\n" % (width,height)
 	svgstring+=sun.__str__()+"\n"
@@ -98,6 +102,17 @@ for i in range(0,frames):
 		svgstring+=planet.run()
 	svgstring+="</svg>"
 
+	svgstrings.append(svgstring)
+
+#render pngs
+def renderImage(args):
+	'''render the svg strings to png'''
+	i,svgstring=args
 	filename="/tmp/test/file%5d.png" % i
 	filename=filename.replace(" ","0")
+	print("rendering",filename)
 	cairosvg.svg2png(bytestring=svgstring.encode(),write_to=filename)
+
+threadpool=Pool(threadnum)
+threadpool.map(renderImage,zip(range(0,frames),svgstrings))
+threadpool.close()
