@@ -8,7 +8,7 @@ width,height=3840,2160
 #width,height=1000,1000
 #frames=365*24
 frames=100
-threadnum=4
+threadnum=16
 
 planetList=[]
 

@@ -1,6 +1,8 @@
 from shapes import *
 from copy import deepcopy
 
+FRAMESKIP=100	#only render one in every n frames
+
 class Planet(Circle):
 	'''a class to represent a planet'''
 	def __init__(self,colour,year,hoursPerDay,radius,sun,centre,clockWise=True):
@@ -46,7 +48,7 @@ class Planet(Circle):
 		self.centre *= getRotationMatrix(angle,point)
 
 	def getSunOrbitMatrix(self):
-		return getRotationMatrix((2*pi)*(self.day/self.year),self.sun.centre)
+		return getRotationMatrix(FRAMESKIP*(2*pi)*(self.day/self.year),self.sun.centre)
 
 	def sunOrbit(self):
 		if self.clockWise:
