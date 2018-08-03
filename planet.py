@@ -38,7 +38,7 @@ class Planet(Circle):
 			self.islands[i].points*=mm
 
 	def rotate(self,angle):
-		mm=getRotationMatrix(angle,self.getCentre())
+		mm=getRotationMatrix(angle,self.centre)
 		for i in range(0,len(self.islands)):
 			self.islands[i].points*=mm
 
@@ -46,7 +46,7 @@ class Planet(Circle):
 		self.centre *= getRotationMatrix(angle,point)
 
 	def getSunOrbitMatrix(self):
-		return getRotationMatrix((2*pi)*(self.day/self.year),self.sun.getCentre())
+		return getRotationMatrix((2*pi)*(self.day/self.year),self.sun.centre)
 
 	def sunOrbit(self):
 		if self.clockWise:

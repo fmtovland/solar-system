@@ -13,7 +13,7 @@ def getMoveMatrix(x,y):
 def getOriginTransform(point):
 	'''return a matix to translate to the origin and back from point'''
 
-	x,y=point
+	x,y,z=point.tolist()[0]
 
 	to=getMoveMatrix(-x,-y)
 	fro=getMoveMatrix(x,y)
@@ -37,14 +37,14 @@ def getSimpleRotationMatrix(angle):
 
 def getScaleMatrix(ratio,centre):
 	'''generate a matrix to make a shape ratio times bigger'''
-	x,y=centre
+	x,y,z=centre.tolist()[0]
 	smatrix=matrix([
 			[ratio,0,0],
 			[0,ratio,0],
 			[0,0,1]
 		])
 
-	to,fro=getOriginTransform((x,y))
+	to,fro=getOriginTransform(centre)
 	return to*smatrix*fro
 
 
@@ -79,7 +79,7 @@ class Polygon(Shape):
 		self.points=[]
 		tx,ty=0,0
 		for a in points:
-			self.points.append([a[0],a[1],1])
+			self.points.append([a[0],a[1],a[2]])
 			tx+=a[0]
 			ty+=a[1]
 		self.points=matrix(self.points)
@@ -100,11 +100,11 @@ class Polygon(Shape):
 
 	def scale(self,ratio):
 		'''scale the shape on the x and y axis'''
-		self.points *= getScaleMatrix(ratio,self.getCentre())
+		self.points *= getScaleMatrix(ratio,self.centre)
 
 	def rotate(self,angle):
 		'''rotate shape angle radians around the shapes centre'''
-		self.points *= getRotationMatrix(angle,self.getCentre())
+		self.points *= getRotationMatrix(angle,self.centre)
 
 	def orbit(self,angle,point):
 		'''rotate a shape around another'''
