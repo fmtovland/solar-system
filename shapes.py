@@ -1,6 +1,15 @@
 from numpy import matrix
 from math import sin,cos,pi
 
+def makePoints2D(shape):
+	returnme=[]
+	for point in shape.tolist():
+		returnme.append((point[0],point[1]))
+	if len(returnme) == 1:
+		return returnme[0]
+	else:
+		return tuple(returnme)
+
 def getMoveMatrix(x,y):
 	'''get an matrix to move a shape along the x and y axis'''
 
@@ -13,7 +22,7 @@ def getMoveMatrix(x,y):
 def getOriginTransform(point):
 	'''return a matix to translate to the origin and back from point'''
 
-	x,y,z=point.tolist()[0]
+	x,y=makePoints2D(point)
 
 	to=getMoveMatrix(-x,-y)
 	fro=getMoveMatrix(x,y)
@@ -37,7 +46,6 @@ def getSimpleRotationMatrix(angle):
 
 def getScaleMatrix(ratio,centre):
 	'''generate a matrix to make a shape ratio times bigger'''
-	x,y,z=centre.tolist()[0]
 	smatrix=matrix([
 			[ratio,0,0],
 			[0,ratio,0],
@@ -54,8 +62,7 @@ class Shape:
 
 	def getCentre(self):
 		'''return the 2d co-ordinates of the centre'''
-		a=self.centre.tolist()[0]
-		return a[0],a[1]
+		return makePoints2D(self.centre)
 
 	def setColour(self,colour):
 		self.colour=colour
@@ -77,19 +84,20 @@ class Polygon(Shape):
 		Shape.__init__(self,colour)
 
 		self.points=[]
-		tx,ty=0,0
+		tx,ty,tz=0,0,0
 		for a in points:
 			self.points.append([a[0],a[1],a[2]])
 			tx+=a[0]
 			ty+=a[1]
+			tz+=a[2]
 		self.points=matrix(self.points)
 		poino=len(points)
-		self.centre=matrix([tx/poino,ty/poino,1])
+		self.centre=matrix([tx/poino,ty/poino,tz/poino])
 
 	def __str__(self):
 		returnme="<polygon fill=\"%s\" points=\"" % self.colour
 		for a in self.points.tolist():
-			returnme+="%.2f,%.2f " % (a[0],a[1])
+			returnme+="%.2f,%.2f " % makePoints2D(a)
 		returnme+="\"/>"
 		return returnme
 
@@ -124,8 +132,8 @@ class FreeShape(Polygon):
 		returnme1="<path fill=\"%s\" d=\"" % self.colour
 
 		dpath=self.dpath
-		for a in self.points.tolist():
-			point="%.3f,%.3f" % (a[0],a[1])
+		for a in self.points:
+			point="%.3f,%.3f" % makePoints2D(a)
 			dpath=dpath.replace("%POINT%",point,1)
 		for b in self.dpathData:
 			dpath=dpath.replace("%"+ b +"%",str(self.dpathData[b]))
