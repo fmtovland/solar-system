@@ -1,5 +1,6 @@
 from shapes import *
 from planet import *
+import cairosvg
 
 
 width,height=3840,2160
@@ -38,7 +39,7 @@ mercury.addIsland(FreeShape("grey",
 					(-9.09685919,-1.00435,1),
 					(-3.9119129,-1.64497,1),
 					(-1.1339285,-2.8112,1),
-					dpath="M %CENTRE% m %POINT% c %POINT% %POINT% %POINT% %POINT% %POINT% %POINT% %POINT% %POINT% %POINT% %POINT% %POINT% %POINT% %POINT% %POINT% %POINT% %POINT% z"))
+					dpath="M %CENTRE% m %POINT% c %POINT% %POINT% %POINT% %POINT% %POINT% %POINT% %POINT% %POINT% %POINT% %POINT% %POINT% %POINT% %POINT% %POINT% %POINT% z"))
 
 #venus
 venus=Planet("Purple",224,20,22,sun,getSunDist(180),clockWise=False)
@@ -91,13 +92,12 @@ jupiter=Planet("aquamarine",10475,10,65,sun,getSunDist(700))
 planetList.append(jupiter)
 
 for i in range(0,frames):
-	filename="/tmp/test/file%5d.svg" % i
-	filename=filename.replace(" ","0")
-	out=open(filename,"w+")
-
-	out.write("<svg width=\"%s\" height=\"%s\" bgcolor=\"black\">" % (width,height))
-	out.write(sun.__str__())
+	svgstring="<svg width=\"%s\" height=\"%s\" bgcolor=\"black\">\n" % (width,height)
+	svgstring+=sun.__str__()+"\n"
 	for planet in planetList:
-		planet.run(out)
-	out.write("</svg>")
-	out.close()
+		svgstring+=planet.run()
+	svgstring+="</svg>"
+
+	filename="/tmp/test/file%5d.png" % i
+	filename=filename.replace(" ","0")
+	cairosvg.svg2png(bytestring=svgstring.encode(),write_to=filename)

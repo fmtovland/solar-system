@@ -63,10 +63,10 @@ class Planet(Circle):
 		self.sun.moonOrbit(moon)
 		moon.centre *= self.getSunOrbitMatrix()
 
-	def run(self,f):
+	def run(self):
 		'''execute one frame of the programs logic'''
-		f.write(self.__str__()+"\n")
 		self.sunOrbit()
+		return self.__str__()+"\n"
 
 class Sun(Circle):
 	def moonOrbit(self,moon):
