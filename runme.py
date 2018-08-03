@@ -1,9 +1,9 @@
 width,height=3840,2160
 #width,height=500000,500000
 #width,height=1000,1000
-#frames=365*24
-frames=100
-FRAMESKIP=100	#only render one in every n frames
+frames=365*24
+#frames=100
+#FRAMESKIP=100	#only render one in every n frames
 threadnum=16
 
 from shapes import *
@@ -95,6 +95,7 @@ jupiter=Planet("aquamarine",10475,10,65,sun,getSunDist(700))
 planetList.append(jupiter)
 
 #generate svgs
+print("generating frames")
 svgstrings=[]
 for i in range(0,frames):
 	svgstring="<svg width=\"%s\" height=\"%s\" bgcolor=\"black\">\n" % (width,height)
@@ -111,7 +112,7 @@ def renderImage(args):
 	i,svgstring=args
 	filename="/tmp/test/file%5d.png" % i
 	filename=filename.replace(" ","0")
-	print("rendering",filename)
+	print("rendering frame",i)
 	cairosvg.svg2png(bytestring=svgstring.encode(),write_to=filename)
 
 threadpool=Pool(threadnum)
