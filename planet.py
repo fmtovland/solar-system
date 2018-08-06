@@ -21,7 +21,6 @@ class Planet(Circle):
 	def __str__(self):
 		tmp=deepcopy(self)
 		tmp.centre *= self.getSunOrbitMatrix()
-		self.sun.moonOrbit(tmp)
 		returnme=Circle.__str__(tmp)
 		for l in tmp.islands:
 			l.points*=getSimpleRotationMatrix(2*pi*(self.hours/self.hoursPerDay))
@@ -50,7 +49,7 @@ class Planet(Circle):
 		self.centre *= getRotationMatrix(angle,point)
 
 	def getSunOrbitMatrix(self):
-		return getRotationMatrix(FRAMESKIP*(2*pi)*(self.day/self.year),self.sun.centre)
+		return getRotationMatrix(FRAMESKIP*(2*pi)*(self.day/self.year),self.sun.centre) * self.sun.getSunOrbitMatrix()
 
 	def sunOrbit(self):
 		if self.clockWise:
@@ -63,15 +62,11 @@ class Planet(Circle):
 		self.day%=self.year
 		self.hours%=self.hoursPerDay
 
-	def moonOrbit(self,moon):
-		self.sun.moonOrbit(moon)
-		moon.centre *= self.getSunOrbitMatrix()
-
 	def run(self):
 		'''execute one frame of the programs logic'''
 		self.sunOrbit()
 		return self.__str__()+"\n"
 
 class Sun(Circle):
-	def moonOrbit(self,moon):
-		pass
+	def getSunOrbitMatrix(self):
+		return 1
