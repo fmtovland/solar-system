@@ -103,10 +103,25 @@ for i in range(0,frames):
 def renderImage(args):
 	'''render the svg strings to png'''
 	i,svgstring=args
-	filename="/tmp/test/file%5d.png" % i
-	filename=filename.replace(" ","0")
-	print("rendering frame",i)
-	cairosvg.svg2png(bytestring=svgstring.encode(),write_to=filename)
+
+	if RENDERMODE==0:
+		filename="/tmp/test/file%5d.svg" % i
+		filename=filename.replace(" ","0")
+		print("saving frame",i)
+
+		out=open(filename,"w+")
+		out.write(svgstring)
+		out.close()
+
+	elif RENDERMODE==1:
+		filename="/tmp/test/file%5d.png" % i
+		filename=filename.replace(" ","0")
+		print("rendering frame",i)
+		cairosvg.svg2png(bytestring=svgstring.encode(),write_to=filename)
+
+	else:
+		print("invalid render mode")
+		quit()
 
 threadpool=Pool(threadnum)
 threadpool.map(renderImage,zip(range(0,frames),svgstrings))
