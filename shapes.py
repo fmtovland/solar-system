@@ -32,10 +32,25 @@ def getOriginTransform(point):
 def getRotationMatrix(angle,point):
 	'''get matrix to rotate shape angle radians around point'''
 
-	rmatrix=getSimpleRotationMatrix(angle)
+#	!slow way!
+#	rmatrix=getSimpleRotationMatrix(angle)
+#
+#	to,fro=getOriginTransform(point)
+#	return to*rmatrix*fro
 
-	to,fro=getOriginTransform(point)
-	return to*rmatrix*fro
+#	!fast way!
+
+	x,y=makePoints2D(point)
+	a=cos(angle)
+	b=sin(angle)
+	c1=-(a*x)+(b*y)+x
+	c2=-(b*x)-(a*y)+y
+
+	return matrix([
+			[ a, b,0],
+			[-b, a,0],
+			[c1,c2,1]
+		])
 
 def getSimpleRotationMatrix(angle):
 	return matrix([
