@@ -1,0 +1,1 @@
+requires cairosvg and numpy
