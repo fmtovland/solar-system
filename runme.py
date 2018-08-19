@@ -10,6 +10,8 @@ def getSunDist(dist):
 	'''get a planets starting position from the distance from the sun'''
 	return int(width/2),int(height/2)-dist,1
 
+width,height=3840,2160		#internal resolution
+
 #sun
 sun=Sun("yellow",100,getSunDist(0))
 
