@@ -89,6 +89,9 @@ planetList.append(deimos)
 jupiter=Planet("aquamarine",10475,10,65,sun,getSunDist(700))
 planetList.append(jupiter)
 
+#moons of jupiter (oooooh boy!)
+
+
 #generate svgs
 print("generating frames")
 svgstrings=[]
