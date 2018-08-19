@@ -119,7 +119,7 @@ def renderImage(args):
 		filename="/tmp/test/file%5d.png" % i
 		filename=filename.replace(" ","0")
 		print("rendering frame",i)
-		cairosvg.svg2png(bytestring=svgstring.encode(),write_to=filename)
+		cairosvg.svg2png(bytestring=svgstring.encode(),write_to=filename,scale=renderScale)
 
 	else:
 		print("invalid render mode")
