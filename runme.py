@@ -90,7 +90,19 @@ jupiter=Planet("aquamarine",10475,10,65,sun,getSunDist(700))
 planetList.append(jupiter)
 
 #moons of jupiter (oooooh boy!)
-
+jx,jy=jupiter.getCentre()
+#io
+io=Planet("#B6A54B",1,42,7,jupiter,(jx,jy-90))
+planetList.append(io)
+#europa
+europa=Planet("white",1,84,6,jupiter,(jx,jy-115))
+planetList.append(europa)
+#ganymede
+ganymede=Planet("silver",1,168,10,jupiter,(jx,jy-140))
+planetList.append(ganymede)
+#callisto
+callisto=Planet("#527B7F",1,384,9,jupiter,(jx,jy-175))
+planetList.append(callisto)
 
 #generate svgs
 print("generating frames")
