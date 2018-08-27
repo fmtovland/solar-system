@@ -22,8 +22,9 @@ class Planet(Circle):
 		tmp=deepcopy(self)
 		tmp.centre *= self.getSunOrbitMatrix()
 		returnme=Circle.__str__(tmp)
+		mm=getSimpleRotationMatrix(2*pi*(self.hours/self.hoursPerDay))
 		for l in tmp.islands:
-			l.points*=getSimpleRotationMatrix(2*pi*(self.hours/self.hoursPerDay))
+			l.points*=mm
 			returnme+="\n"+l.__str__()
 		centre="%.3f,%.3f" % tmp.getCentre()
 		returnme=returnme.replace("%CENTRE%",centre)
